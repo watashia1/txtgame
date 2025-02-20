@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>“野猫军团”侦探小游戏：猫咪节美食嘉年华大窃案</title>
+     <div class='large-title'>“野猫军团”侦探小游戏：猫咪节美食嘉年华大窃案</div>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #clue-counter {
+            background-color: #ffd700;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        #scene-image {
+            max-width: 100%;
+            margin-bottom: 10px;
+            display: block; /* Ensure image is displayed by default if src is set */
+        }
+        .choice-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .choice-button:hover {
+            background-color: #45a049;
+        }
+         .large-title {
+            font-size: 2em; /* 放大一个字号 */
+            font-weight: bold; /* 加粗 */
+            text-align: center; /* 居中 */
+            margin-bottom: 20px; /* 添加一些底部间距 */
+        }
+        #story-text {
+            white-space: pre-line;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="clue-counter">线索数: 0</div>
+        <img id="scene-image" src="" alt="Scene Image">
+        <div id="story-text"></div>
+        <div id="choices"></div>
+    </div>
+
+    <script>
+        let clueCount = 0;
+
+        const scenes = {
+            start: {
+                text: " \n\n＊ 游戏规则说明：\n\n1. 玩家在游戏过程中需要收集线索，解开谜题\n2. 游戏中设有线索计数器，收集到的关键线索会被自动记录\n3. 部分场景的解锁需要收集足够的线索\n4. 根据玩家的选择和收集的线索会触发不同结局\n\n＊ 故事背景：\n\n你是汪汪镇侦探事务所的名侦探，你拥有聪明的头脑和敏锐的观察力。在你手中破解的案件数不胜数。\n\n这回，汪汪镇又出大事啦！\n\n镇上三大美食地标：汪汪面包工厂、汪汪寿司店和汪汪冰淇淋工场的美食，竟然在同一天晚上全部消失不见了！\n\n最让人头疼的是，这事偏偏发生在一年一度的\"猫咪节\"美食嘉年华前夕！没有美食，这个节日还怎么过？！\n\n好吧，这下该你这位名侦探出场啦！请用你聪明的头脑和敏锐的观察力，再次破解这回的案件吧！\n\n",
+                choices: [
+                    { text: "开始游戏", nextScene: "scene1" }
+                ],
+                image: "images/start_scene.jpg" // 场景图片路径
+            },
+            scene1: {
+                text: "【镇中心广场】\n\n你和你的助手——小玛咪的哥哥唬嚎，一起站在镇中心广场，这里是三个案发现场的中心点。\n\n广场中央的喷泉雕塑原本是一尊威武的警犬雕像，但不知何时被人悄悄换成了……一个巨大的猫咪形状面包？！上面还插了一块崭新的告示牌。\n\n你的助手唬嚎气得直跳脚：\"这简直是对我们的赤裸裸嘲讽！那些无法无天的野猫军团，一定是他们干的！\"",
+                choices: [
+                    { text: "A. 先去面包工厂看看，毕竟这香味太诱人了！", nextScene: "scene2" },
+                    { text: "B. 去汪汪寿司店调查，唬嚎一直嚷嚷着偷寿司的人不可原谅……", nextScene: "scene3" },
+                    { text: "C. 直奔冰淇淋工场，我最喜欢甜点了！", nextScene: "scene4" },
+                    { text: "D. 仔细研究一下这块可疑的告示牌。", nextScene: "scene5" }
+                ],
+                image: "images/scene1_scene.jpg" // 场景图片路径
+            },
+            scene2: {
+                text: "【汪汪面包工厂】\n\n\n面包工厂的玻璃门上贴着一张皱巴巴的纸条，上面用歪歪扭扭的猫爪体写着：\n\"老板身体抱恙，紧急休假！\n面包随便拿，记得给钱哦～\nPS：单子记得写在账本上喵！\"\n\n签名是……一个歪歪扭扭的猫爪印。\n\n工厂内部一片狼藉：\n- 面粉洒得到处都是，还有几个爪印踩在上面\n- 烤箱居然还开着，但里面空空如也\n- 角落里有一本翻开的笔记本，上面写着\"终极美味面包配方\"\n\n你抓起地上的面粉检查了一下：\"这些面粉……好像是刚撒不久的！\"",
+                choices: [
+                    { text: "A. 追查纸条上的猫爪印", nextScene: "scene6", addClue: true },
+                    { text: "B. 研究那本神秘的配方笔记", nextScene: "scene7", addClue: true },
+                    { text: "C. 先回广场，看看其他地方是不是也有类似的线索", nextScene: "scene1" }
+                ],
+                image: "images/scene2_bakery.png" // 场景图片路径
+            },
+            scene3: {
+                text: "【汪汪寿司店】\n\n\n推开寿司店的拉门，一股浓郁的醋饭香扑面而来。但店内的场景却让人傻眼：\n- 引以为傲的回转寿司传送带空空如也\n- 台面上零零散散躺着几块……超大号三文鱼？！\n- 墙上的菜单被改成了：\"今日推荐菜单：猫咪创意寿司！\"\n\n你注意到柜台后面的地上有一个翻倒的垃圾桶，里面散落着一些奇怪的鱼骨头……\n\n你的助手唬嚎凑近闻了闻那些三文鱼：\"嗯？这鱼……好像是从渔港那边新进的！\"",
+                choices: [
+                    { text: "A. 追查这些可疑的大鱼的来源", nextScene: "scene8", addClue: true },
+                    { text: "B. 仔细检查那个被改动的奇怪菜单", nextScene: "scene9", addClue: true },
+                    { text: "C. 先回广场，调查其他地点", nextScene: "scene1" }
+                ],
+                image: "images/scene3_sushi.jpg" // 场景图片路径
+            },
+            scene4: {
+                text: "【冰淇淋工场】\n\n\n冰淇淋工场门口，原本应该放着招牌冰淇淋模型的展示台上，现在却立着一个……正在融化的猫咪冰雕？！\n\n工场内部更是一片混乱：\n- 所有冰淇淋柜台都空空如也\n- 地上到处都是五颜六色的融化痕迹\n- 制冰机旁边还放着一摞歪歪扭扭的蛋筒\n\n最离奇的是，你在柜台下发现了一张小纸条：\n\"味道超赞！下次还来！\nPS：账单记得寄到汪汪镇公所旁的猫咪形状信箱喵～\"",
+                choices: [
+                    { text: "A. 调查工场内遗留的痕迹", nextScene: "scene10", addClue: true },
+                    { text: "B. 研究那张可疑的纸条", nextScene: "scene11", addClue: true },
+                    { text: "C. 先回广场，看看其他地方的情况", nextScene: "scene1" }
+                ],
+                image: "images/scene4_icecream.jpg" // 场景图片路径
+            },
+            scene5: {
+                text: "【可疑的告示牌】\n\n\n你凑近仔细端详这块告示牌，发现上面写着：\n\"'猫咪节'美食嘉年华\n诚邀各位品尝美味！\n——野猫军团赞助（喵）\"\n\n仔细观察后你发现：\n1. \"赞助\"两个字明显是后加上去的\n2. 整个告示牌充满了猫爪印的装饰\n3. 背面还贴着一张小纸条：\"记得把账单寄到汪汪镇公所旁的猫咪形状信箱喵！\"",
+                choices: [
+                    { text: "A. 这一定和野猫军团有关！", nextScene: "scene12", addClue: true },
+                    { text: "B. 会不会是有人在栽赃陷害？", nextScene: "scene13" },
+                    { text: "C. 先去调查其他地方", nextScene: "scene1" }
+                ],
+                image: "images/scene5_sign.png" // 场景图片路径
+            },
+            scene6: {
+                text: "【神秘的猫爪印】\n\n\n你仔细对比了各处发现的猫爪印：\n- 面包工厂门上的\n- 告示牌上的\n- 地上面粉里的\n\n突然，你发现了一个重要细节：每个地方的猫爪印都是整整齐齐的8对！\n\n你的助手唬嚎惊呼：\"野猫军团不就是8只长得一模一样的野猫吗？！\"",
+                choices: [
+                    { text: "A. 继续追查其他线索", nextScene: () => clueCount >= 3 ? "scene14" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene6_pawprints.jpeg" // 场景图片路径
+            },
+            scene7: {
+                text: "【神秘的面包配方】\n\n\n你翻开那本\"终极美味面包配方\"，发现里面写满了歪歪扭扭的笔记：\n\"1. 面粉要用爪爪揉15分钟\n2. 烤箱温度要调到鱼干烤制温度\n3. 撒上木天蓼增香……\"\n\n这哪里是人类的面包配方！分明是猫咪版的特制配方！",
+                choices: [
+                     { text: "A. 继续追查其他线索", nextScene: () => clueCount >= 3 ? "scene14" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene7_recipe.jpg" // 场景图片路径
+            },
+            scene8: {
+                text: "【可疑的猫爪印小径】\n\n\n你顺着线索来到渔港，发现这里一片混乱：\n- 渔民们都在抱怨鱼被偷了\n- 地上有一条通往仓库的……猫爪印小径\n- 空气中飘着浓郁的木天蓼香味",
+                choices: [
+                    { text: "A. 继续收集其他线索", nextScene: () => clueCount >= 3 ? "scene16" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene8_fish.jpg" // 场景图片路径
+            },
+            scene9: {
+                text: "【奇怪的菜单】\n\n\n仔细查看菜单，你发现这哪里是普通的菜单，分明是一份\"猫爪寿司制作教程\"：\n\"1. 饭团捏成爪爪形状\n2. 鱼片要切得比猫饼干大一点\n3. 醋要用木天蓼醋...\"",
+                choices: [
+                    { text: "A. 继续追查其他线索", nextScene: () => clueCount >= 3 ? "scene16" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene9_menu.jpg" // 场景图片路径
+            },
+            scene10: {
+                text: "【冰淇淋工场遗留的痕迹】\n\n\n你开始仔细调查起遗留在现场的痕迹，发现：\n\n- 冰淇淋的痕迹中粘着许多黄褐色的猫毛\n- 地面上掉落着几片木天蓼的叶子\n- 地上有一道通往门外的痕迹",
+                choices: [
+                    { text: "A. 继续调查其他线索", nextScene: () => clueCount >= 3 ? "scene18" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene10_traces.jpg" // 场景图片路径
+            },
+            scene11: {
+                text: "【奇怪的采购清单】\n\n\n仔细研究纸条，你发现这是一张非常详细的\"采购清单\"：\n\"1. 香草冰淇淋：用来堆摩天轮主体\n2. 巧克力冰淇淋：用来画摩天轮窗户\n3. 草莓冰淇淋：用来堆摩天轮尖顶……\"\n\n这分明是一份摩天轮建造计划！",
+                choices: [
+                    { text: "A. 继续追查其他线索", nextScene: () => clueCount >= 3 ? "scene18" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene11_bill.jpg" // 场景图片路径
+            },
+            scene12: {
+                text: "【野猫军团的计划】\n\n\n整理所有线索，你发现一个规律：\n- 每个现场都留下了账单\n- 所有账单都要寄到\"汪汪镇公所旁的猫咪形状信箱\"\n- 所有食材都在为某个活动做准备\n\n这是不是意味着……",
+                choices: [
+                    { text: "A. 继续调查，寻找更多线索", nextScene: () => clueCount >= 3 ? "scene20" : "scene1" },
+                    { text: "B. 立即逮捕野猫军团！", nextScene: "ending1" }
+                ],
+                image: "images/scene5_sign.png" // 场景图片路径
+            },
+            scene13: {
+                text: "【另一种可能】\n\n\n你开始怀疑，会不会有人在栽赃陷害野猫军团？\n但仔细想想：\n- 那些歪歪扭扭的爪印字迹\n- 各种猫咪风格的改造\n- 到处都有的木天蓼香味……\n\n这也太\"猫咪\"了吧！",
+                choices: [
+                    { text: "A. 继续调查", nextScene: () => clueCount >= 3 ? "scene20" : "scene1" },
+                    { text: "B. 立刻抓捕野猫军团", nextScene: "ending1" }
+                ],
+                image: "images/scene5_sign.png" // 场景图片路径
+            },
+            scene14: {
+                text: "【野猫军团的秘密基地 1】\n\n\n你沿着线索，找到了野猫军团的秘密基地！在一间废弃的面包房里，你看到：\n\n- 8只戴着厨师帽的猫咪正在认真揉面团\n- 墙上贴满了面包制作的参考图\n- 角落里堆着一堆失败的面包作品\n\n看到这个场景，你决定：",
+                choices: [
+                    { text: "A. 还是先整理一下所有找到的线索的吧", nextScene: "scene20" },
+                    { text: "B. 立即实施抓捕", nextScene: "ending1" }
+                ],
+                image: "images/scene14_bakery_secret.jpg" // 场景图片路径
+            },
+            scene16: {
+                text: "【野猫军团的秘密基地 2】\n\n\n你根据线索，在渔港的仓库里，你发现了野猫军团的秘密基地：\n- 8只猫咪正在认真练习切鱼片\n- 墙上贴着\"寿司制作完全指南\"\n- 桌上摆着一堆形状怪异的寿司成品\n\n看到这个场景，你决定：",
+                choices: [
+                    { text: "A. 还是先整理一下所有找到的线索的吧", nextScene: "scene20" },
+                    { text: "B. 立即实施抓捕", nextScene: "ending1" }
+                ],
+                image: "images/scene16_sushi_secret.jpg" // 场景图片路径
+            },
+            scene18: {
+                text: "【野猫军团的秘密基地 3】\n\n\n你沿着线索，来到郊外，发现了一座正在建造中的彩色摩天轮：\n- 摩天轮全部用彩色冰淇淋制作。\n- 8只猫咪正在专心装饰摩天轮细节\n- 地上画着详细的摩天轮设计图\n\n看到这个场景，你决定：",
+                choices: [
+                    { text: "A. 还是先整理一下所有找到的线索的吧", nextScene: "scene20" },
+                    { text: "B. 立即实施抓捕", nextScene: "ending1" }
+                ],
+                image: "images/scene18_ferris_wheel.jpg" // 场景图片路径
+            },
+            scene20: {
+                text: "【真相大白】\n\n\n整理所有线索，你终于明白了：\n野猫军团一直在秘密准备参加\"猫咪节\"美食嘉年华！\n- 偷走面包工厂的面粉是要研发猫咪创意面包\n- 偷走寿司店的寿司是想制作猫爪寿司\n- 偷走冰淇淋工场的冰淇淋是要建一座猫咪冰淇淋摩天轮！\n\n它们留下账单是真心想要偿还的。\n\n于是，你决定：",
+                choices: [
+                    { text: "A. 帮助野猫军团完成准备", nextScene: "ending2" },
+                    { text: "B. 还是决定逮捕他们", nextScene: "ending1" }
+                ],
+                image: "images/scene20_truth.jpg" // 场景图片路径
+            },
+            ending1: {
+                text: "【bad ending：搞砸了！】\n\n你坚持认为野猫军团在搞破坏，执意要逮捕他们。结果：\n- 美食嘉年华没了创意美食\n- 野猫军团的心愿没能实现\n- 你还因为误会而感到愧疚\n\n最糟糕的是...猫咪节的赞助商和主持人汪汪先生正式宣布你是：\"本年度最不懂艺术的侦探\"！",
+                choices: [
+                    { text: "重新开始游戏", nextScene: "start" }
+                ],
+                image: "images/ending1_bad.jpg" // 场景图片路径
+            },
+            ending2: {
+                text: "【good ending：完美谢幕】\n\n你选择相信并帮助野猫军团：\n- 教他们正确的面包制作方法\n- 指导他们改进寿司造型\n- 帮忙完善冰淇淋摩天轮设计\n\n在\"猫咪节\"美食嘉年华上：\n- 猫爪面包获得\"最具创意奖\"\n- 猫咪寿司拿下\"最佳造型奖\"\n- 冰淇淋摩天轮荣获\"最佳艺术装置奖\"\n\n完美通关！你获得了\"野猫军团的心灵之友\"称号！\n\n游戏结束",
+                choices: [
+                    { text: "重新开始游戏", nextScene: "start" }
+                ],
+                image: "images/ending2_good.jpg" // 场景图片路径
+            }
+        };
+
+        function showScene(sceneId) {
+            if (sceneId === 'start') {
+                clueCount = 0; // Reset clueCount when starting the game
+            }
+
+            const scene = scenes[sceneId];
+            let textContent = scene.text;
+
+             // 动态替换场景文本中的线索计数器显示
+            textContent = textContent.replace(/【当前线索数：.*?】/g, `【当前线索数：${clueCount}】`);
+            textContent = textContent.replace(/【当前线索数：.*?≥ 3】/g, `【当前线索数：${clueCount} ≥ 3】`);
+
+
+            document.getElementById('story-text').textContent = textContent;
+            document.getElementById('clue-counter').textContent = `线索数: ${clueCount}`;
+
+            // Image handling
+            const sceneImageElement = document.getElementById('scene-image');
+            if (scene.image) {
+                sceneImageElement.src = scene.image;
+                sceneImageElement.style.display = 'block'; // Show image if path exists
+            } else {
+                sceneImageElement.src = ""; // Clear src if no image for this scene
+                sceneImageElement.style.display = 'none'; // Hide image element if no path
+            }
+
+
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.textContent = choice.text;
+                button.className = 'choice-button';
+                button.onclick = () => {
+                    if (choice.addClue) {
+                        clueCount++;
+                    }
+                    if (typeof choice.nextScene === 'function') {
+                        showScene(choice.nextScene());
+                    } else {
+                        showScene(choice.nextScene);
+                    }
+                };
+                choicesDiv.appendChild(button);
+            });
+        }
+
+        // 开始游戏
+        showScene('start');
+    </script>
+</body>
+</html>
